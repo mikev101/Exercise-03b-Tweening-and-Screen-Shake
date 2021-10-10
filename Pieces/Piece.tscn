@@ -1,55 +1,43 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Pieces/Piece.gd" type="Script" id=1]
-[ext_resource path="res://Assets/bear.png" type="Texture" id=2]
-[ext_resource path="res://Assets/star.png" type="Texture" id=3]
-[ext_resource path="res://Assets/star_small.png" type="Texture" id=4]
+[ext_resource path="res://Assets/tileBlack_25.png" type="Texture" id=2]
+[ext_resource path="res://Assets/environment_06.png" type="Texture" id=3]
 
-[sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0, 0.511429, 1 )
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0.736364 ), 0.0, 0.0, 0, 0, Vector2( 0.505051, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.772727 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="Curve" id=3]
-_data = [ Vector2( 0.0280612, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
-
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=3]
 flag_disable_z = true
 direction = Vector3( 0, 0, 0 )
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 150.0
 initial_velocity_random = 0.25
 orbit_velocity = 1.0
 orbit_velocity_random = 1.0
-scale = 0.2
-scale_curve = SubResource( 4 )
-color_ramp = SubResource( 2 )
-hue_variation = 1.0
-hue_variation_random = 1.0
+scale = 1.5
+scale_curve = SubResource( 2 )
 
-[sub_resource type="CanvasItemMaterial" id=6]
+[sub_resource type="CanvasItemMaterial" id=4]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=7]
+[sub_resource type="Gradient" id=5]
 offsets = PoolRealArray( 0, 0.524476, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=8]
-gradient = SubResource( 7 )
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
 
-[sub_resource type="Curve" id=9]
+[sub_resource type="Curve" id=7]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.50165, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.986799, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=10]
-curve = SubResource( 9 )
+[sub_resource type="CurveTexture" id=8]
+curve = SubResource( 7 )
 
-[sub_resource type="ParticlesMaterial" id=11]
+[sub_resource type="ParticlesMaterial" id=9]
 emission_shape = 2
 emission_box_extents = Vector3( 50, 50, 1 )
 flag_disable_z = true
@@ -60,39 +48,44 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 radial_accel = -500.0
 radial_accel_random = 1.0
-scale_curve = SubResource( 10 )
-color_ramp = SubResource( 8 )
+scale_curve = SubResource( 8 )
+color_ramp = SubResource( 6 )
 hue_variation = 0.25
 hue_variation_random = 0.25
+
+[sub_resource type="StreamTexture" id=10]
+flags = 4
+load_path = "res://.import/star_small.png-07fe231a42b7d9fa0592eb03e2a37d3f.stex"
 
 [node name="Piece" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 0.45, 0.45 )
 texture = ExtResource( 2 )
 
 [node name="Selected" type="Particles2D" parent="."]
 emitting = false
 lifetime = 0.75
-process_material = SubResource( 5 )
+process_material = SubResource( 3 )
 texture = ExtResource( 3 )
 
 [node name="Select" type="Sprite" parent="."]
 visible = false
-modulate = Color( 1, 1, 0, 1 )
-material = SubResource( 6 )
+modulate = Color( 0.490196, 0.490196, 0.490196, 1 )
+material = SubResource( 4 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="Falling" type="Particles2D" parent="."]
+visible = false
 emitting = false
 amount = 20
 lifetime = 1.5
 one_shot = true
 explosiveness = 1.0
-process_material = SubResource( 11 )
-texture = ExtResource( 4 )
+process_material = SubResource( 9 )
+texture = SubResource( 10 )
 
 [node name="Tween" type="Tween" parent="."]
 

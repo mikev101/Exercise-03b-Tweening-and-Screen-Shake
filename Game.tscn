@@ -1,11 +1,40 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Grid/grid.gd" type="Script" id=1]
 [ext_resource path="res://Pieces/Piece Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UI/HUD.gd" type="Script" id=3]
 [ext_resource path="res://Camera.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Good_Destroy.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Chiptune_Bop_Loop2.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Orbitron-Regular.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://Assets/Boop.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Bad_Destroy.wav" type="AudioStream" id=9]
+[ext_resource path="res://UI/Instructions.gd" type="Script" id=10]
+[ext_resource path="res://Assets/Background_City_Skyline_1.png" type="Texture" id=11]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 7 )
 
 [node name="Game" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = -243.0
+margin_right = 833.0
+margin_bottom = 1024.0
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource( 1 )
@@ -31,12 +60,89 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 566.0
 margin_bottom = 20.0
+custom_fonts/font = SubResource( 1 )
 text = "Score: "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Time" type="Label" parent="HUD"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 560.0
+margin_bottom = 20.0
+custom_fonts/font = SubResource( 1 )
+text = "Time:"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="HUD"]
+autostart = true
+
+[node name="Instructions" type="Control" parent="HUD"]
+pause_mode = 2
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="HUD/Instructions"]
+margin_right = 576.0
+margin_bottom = 1024.0
+color = Color( 0, 0, 0, 0.752941 )
+
+[node name="Instructions" type="Label" parent="HUD/Instructions"]
+margin_right = 576.0
+margin_bottom = 780.0
+custom_fonts/font = SubResource( 2 )
+text = "Level 1
+
+How many points can you 
+Score in 60 seconds?"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Countdown_label" type="Label" parent="HUD/Instructions"]
+margin_right = 576.0
+margin_bottom = 1024.0
+custom_fonts/font = SubResource( 3 )
+text = "Starting in: "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Countdown" type="Timer" parent="HUD/Instructions"]
+autostart = true
+
 [node name="Camera" type="Camera2D" parent="."]
 anchor_mode = 0
 current = true
 script = ExtResource( 4 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -10.0
+autoplay = true
+
+[node name="Move" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
+volume_db = -15.0
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -35.0
+
+[node name="Match" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+volume_db = 5.0
+
+[connection signal="timeout" from="HUD/Timer" to="HUD" method="_on_Timer_timeout"]
+[connection signal="timeout" from="HUD/Instructions/Countdown" to="HUD/Instructions" method="_on_Countdown_timeout"]

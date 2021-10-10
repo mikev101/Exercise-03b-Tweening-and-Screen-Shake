@@ -15,6 +15,10 @@ export var transparent_time = 1.0
 export var scale_time = 1.5
 export var rot_time = 1.5
 
+var Spawn = null
+var Move = null
+var Match = null
+
 var Explosion = preload("res://Explosion/Explosion.tscn")
 
 func _ready():
@@ -30,20 +34,30 @@ func _physics_process(_delta):
 	if selected:
 		$Select.show()
 		$Selected.emitting = true
+		z_index = 10
 	else:
 		$Select.hide()
 		$Selected.emitting = false
+		z_index = 1
 	wiggle += 0.1
 	position.x = target_position.x + (sin(wiggle)*wiggle_amount)
 
 func generate(pos):
 	position = Vector2(pos.x,-100)
 	target_position = pos
+	if Spawn == null:
+		Spawn = get_node_or_null("/root/Game/Spawn")
+	if Spawn != null:
+		Spawn.play()
 	$Tween.interpolate_property(self, "position", position, target_position, randf()+0.5, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	$Tween.start()
 
 func move_piece(change):
 	target_position = target_position + change
+	if Move == null:
+		Move = get_node_or_null("/root/Game/Move")
+	if Move != null:
+		Move.play()
 	$Tween.interpolate_property(self, "position", position, target_position, 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$Tween.start()
 
@@ -62,6 +76,10 @@ func die():
 		$Tween.start()
 		$Tween.interpolate_property($Sprite, "rotation",rotation, (randf()*4*PI)-2*PI, rot_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$Tween.start()
+	if Match == null:
+		Match = get_node_or_null("/root/Game/Match")
+	if Match != null:
+		Match.play()
 
 func _on_Timer_timeout():
 	if Effects == null:
