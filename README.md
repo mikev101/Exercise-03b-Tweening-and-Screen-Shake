@@ -1,4 +1,4 @@
-# Exercise-03b-Tweening-and-Screen-Shake
+# Project-03-match-3
 
 Exercise for MSCH-C220, 23 September 2021
 
